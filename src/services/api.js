@@ -43,6 +43,14 @@ const getCurrentUser = () => {
   });
 };
 
+const getCategoryAppointments = category => {
+  console.log(category.id)
+  return fetch(`${API_ROOT}/appointments_by_category`, {
+    method:'GET',
+    headers: {...headers(), 'category-id': category.id}
+  }).then(res=>res.json())
+}
+
 export const api = {
   auth: {
     login,
@@ -53,5 +61,8 @@ export const api = {
   },
  categories: {
     getCategories 
+  },
+  appointments: {
+    getCategoryAppointments
   }
 };

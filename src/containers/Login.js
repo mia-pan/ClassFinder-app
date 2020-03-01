@@ -11,7 +11,7 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      // error: false,
+      error: false,
       fields: {
         username: '',
         password: ''
@@ -20,21 +20,24 @@ class Login extends React.Component {
   }
 
   handleChange = e => {
+    console.log("e.target.name", e.target.value)
     const newFields = { ...this.state.fields, [e.target.name]: e.target.value };
     this.setState({ fields: newFields });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state)
+    // console.log(this.state)
     api.auth.login(this.state.fields).then(res => {
-        console.log(res)
-      if (!res.error) {
-        // const updatedState = { ...this.state.auth, user: res };
+        console.log("LOGIN.js", res)
+        const updateState = { ...this.state.auth, user: res };
+        console.log('updateState', updateState)
+      if (res.error) {
         this.props.onLogin(res);
         this.props.history.push('/');
       } else {
-        this.setState({ error: true });
+        this.setState({ auth: updateState });
+
       }
     });
   };
@@ -95,9 +98,13 @@ class Login extends React.Component {
                onChange={this.handleChange}
                 />
 
-               <Button color='orange' fluid size='large'>
+              
+              <Link to='/categories'>
+                    <Button color='orange' fluid size='large'>
                     Login
-              </Button>
+                    </Button>
+              </Link>
+              
           </Segment>
           </Form>
           <Message>

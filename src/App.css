@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+.category {
+  margin: '12rem 0 0 12rem'
+}
+
+/* .class_info {
+  margin: 10rem 0 0 0;
+} */
+
+#wrapper{
+  width:940px;
+  margin:0 auto;
+  overflow: auto;
+  }
