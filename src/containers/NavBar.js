@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NavLink, withRouter } from 'react-router-dom'
-import { Button, Menu, Container, Image } from 'semantic-ui-react'
+import { Button, Menu, Container, Image, Input} from 'semantic-ui-react'
 
 export default class NavBar extends Component{
    currentUser = this.props.currentUser
@@ -10,6 +10,11 @@ export default class NavBar extends Component{
      console.log( "name" , name)
     this.setState({ activeItem: name })
   
+  }
+
+  handleChange = e => {
+    console.log("input", e.target.value)
+    this.props.onSearch(e)
   }
   
     
@@ -25,6 +30,9 @@ render(){
             <Menu.Item as={NavLink} to="/categories" name='categories' active={activeItem === 'categories'} onClick={this.handleItemClick}/>
             <Menu.Item as={NavLink} to="/myProfile" name='my profile' active={activeItem === 'my profile'} onClick={this.handleItemClick}/>
             <Menu.Item as={NavLink} to="/category_details/:id" name='Class' active={activeItem === 'Class'} onClick={this.handleItemClick}/>
+            <Menu.Item>
+             <Input className='icon' value={this.props.search} icon='search' onChange={(e) => this.handleChange(e)}  placeholder='Search...' />
+            </Menu.Item>
             <Menu.Item position='right'>
                 <Button  as={NavLink} to="/Login" name='Log in' active={activeItem === 'Log in'} onClick={this.handleItemClick} style={{ marginLeft: '0.3em' }}>
                 Log in

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, Card, Icon, Label, Menu, Table, Item, Grid , Container, Button } from 'semantic-ui-react'
+import { Image, Card, Icon, Label, Menu, Table, Item, Grid , Container, Button } from 'semantic-ui-react';
 import { api } from '../services/api'
 class ClassInfoComponent extends Component {
 

@@ -15,6 +15,15 @@ class BlogComponent extends Component {
                                 <Card.Description>
                                     {this.props.blog.story}
                                 </Card.Description>
+                                
+                                <div className='ui two buttons'>
+                                    <Button basic color='green'>
+                                       Edit
+                                    </Button>
+                                    <Button basic color='red' onClick={() => this.props.onclick(this.props.blog)}>
+                                        Delete
+                                    </Button>
+                                    </div>
                             </Card.Content>
                             </Card>
 
