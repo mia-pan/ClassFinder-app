@@ -5,7 +5,7 @@ import { Button, Menu, Container, Image, Input} from 'semantic-ui-react'
 export default class NavBar extends Component{
    currentUser = this.props.currentUser
    loggedIn = !!this.props.currentUser.id
-   state = { activeItem: 'home' }
+   state = { activeItem: 'homepage' }
    handleItemClick = (e, { name }) => {
      console.log( "name" , name)
     this.setState({ activeItem: name })
@@ -24,9 +24,8 @@ render(){
     <div className={`ui top fixed inverted ${this.props.color} menu`}>
       <Image size='small' src='./logo.png' position="left" />
         <Container>
-            <Menu.Item as={NavLink} to="/" name='home'  active={activeItem === 'home'} onClick={this.handleItemClick}/>
-               
-    
+            {/* <Menu.Item as={NavLink} to="/" name='home'  active={activeItem === 'home'} onClick={this.handleItemClick}/> */}
+            <Menu.Item as={NavLink} to="/home" name='home'  active={activeItem === 'homepage'} onClick={this.handleItemClick}/>  
             <Menu.Item as={NavLink} to="/categories" name='categories' active={activeItem === 'categories'} onClick={this.handleItemClick}/>
             <Menu.Item as={NavLink} to="/myProfile" name='my profile' active={activeItem === 'my profile'} onClick={this.handleItemClick}/>
             <Menu.Item as={NavLink} to="/category_details/:id" name='Class' active={activeItem === 'Class'} onClick={this.handleItemClick}/>

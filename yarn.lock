@@ -4612,6 +4612,11 @@ globby@^6.1.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
+google-maps-react@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/google-maps-react/-/google-maps-react-2.0.2.tgz#e03fbba032fe570fb38744bf9cd10b946c591cae"
+  integrity sha512-6cYauGwt22haDUrWxKQ6yoNOqjiuxHo8YYcmb+aBvNICokdXmZOUB6Ah4vD5VexMVlrwP2PFqA/D8sHpEB52KA==
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.2:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
@@ -8363,6 +8368,13 @@ react-google-login@^5.1.1:
   integrity sha512-va/co9925tDrV3txX7PX9Uzht/vvfE0zPO4j/eyI8HAvdd0oY+QLDY6a8tKO6OD882Kz4ebX3tCES2yjkDwawg==
   dependencies:
     "@types/react" "*"
+    prop-types "^15.6.0"
+
+react-google-map@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-google-map/-/react-google-map-3.1.1.tgz#e47e42287ef6bc7510422fbfd5014ab2b4a0d1b4"
+  integrity sha512-8pcddNPqQloBUugqu98z+Mb/gOhY56hKi9sWi3vdbSgOjKL8cMHAEW8sKj3caUysNY89+dEEInyOIAgC7ZUVag==
+  dependencies:
     prop-types "^15.6.0"
 
 react-is@^16.6.0, react-is@^16.6.3, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:

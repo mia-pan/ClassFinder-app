@@ -1,6 +1,8 @@
 import React from 'react'
 import { Card, Image, Icon, Label, Menu, Table } from 'semantic-ui-react'
 import { api } from '../services/api'
+// import { Map, GoogleApiWrapper } from 'google-maps-react';
+import Map from './Map'
 
 
 
@@ -24,6 +26,8 @@ class CardInfoComponent extends React.Component {
         this.props.onAddAppointment(appointment)
     }
 
+   
+
     render() {
         return (
             <>
@@ -42,6 +46,22 @@ class CardInfoComponent extends React.Component {
                 </Card.Content>
                 
             </Card>
+            <div className="App">
+               <Map categories={this.props.categories}
+               googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyDkhgpXKUb91RTLLIu5YkRy5_DVVA5x7ng&v=3.exp&libraries=geometry,drawing,places`}
+               loadingElement={<div style={{ height: `100%` }} />}
+               containerElement={<div style={{ height: `600px`, width: `600px` }} />}
+               mapElement={<div style={{ height: `100%` }} />}
+               />
+            </div>
+
+            {/* <Map
+                google={this.props.google}
+                zoom={8}
+                style={mapStyles}
+                initialCenter={{ lat: 47.6062, lng: 122.3321}}
+            /> */}
+
             <Table celled>
             <Table.Header>
             <Table.Row>
@@ -99,6 +119,15 @@ class CardInfoComponent extends React.Component {
     }
 }
 export default CardInfoComponent
+
+// export default GoogleApiWrapper({
+//     apiKey: 'AIzaSyDkhgpXKUb91RTLLIu5YkRy5_DVVA5x7ng'
+// })(MapContainer);
+
+// const mapStyles = {
+//     width: '350%',
+//     height: '35%',
+// };
 //another way to achieve
 
 

@@ -34,6 +34,52 @@ class ProfileContainer extends Component {
 
     }
 
+    displayCreateNew = (props) => {
+        if(this.props.showUser.isTeacher)
+        return (
+           
+                <Link to={`/create-appointment`}>
+                <Button animated='fade' link>
+                
+                <Button.Content visible>Create A New Class</Button.Content>
+                
+                </Button>
+                </Link>
+        )
+        else 
+        return(null)
+    }
+
+    displayCreateCategory = (props) => {
+        if(this.props.showUser.isTeacher)
+        return (
+           
+                <Link to={`/create-categories`}>
+                <Button animated='fade' link>
+                
+                <Button.Content visible>Create Category</Button.Content>
+                
+                </Button>
+                </Link>
+        )
+        else 
+        return(null)
+    }
+
+    displayStudents = () => {
+        
+        if(this.props.showUser.isTeacher)
+        return(
+            
+            <p>student that joined your class </p>
+            
+            
+
+        )
+        else 
+        return (null)
+    }
+
     
     // editProfile = () => {
     //     return(
@@ -88,6 +134,11 @@ class ProfileContainer extends Component {
                     <Button.Content hidden>go ~</Button.Content>
                     </Button>
                     </Link>
+
+                   {this.displayCreateNew()}
+
+                    {this.displayStudents()}
+                    {this.displayCreateCategory()}
                 </div>
                 
                 <div>

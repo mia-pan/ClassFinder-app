@@ -49,4 +49,14 @@
   width:940px;
   margin:0 auto;
   overflow: auto;
-  }
+}
+
+.ui.inverted.vertical.center.aligned.segment {
+  background-image: url("https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+  background-repeat: no-repeat;
+  background-size: cover
+}
+
+.ui.huge.primary.button {
+  background-color: orange;
+}

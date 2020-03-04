@@ -12,6 +12,12 @@ import NavBar from "./containers/NavBar";
 import Signup from './containers/Signup';
 import ProfileEditForm from './components/ProfileEditForm'
 import CreateBlog from './components/CreateBlog'
+import Footer from "./containers/Footer";
+import HomepageLayout from "./containers/HomepageLayout";
+import About  from "./containers/About"
+import CreateAppointment from './components/CreateAppointment'
+import CreateCategory from './components/CreateCategory'
+
 
 
 
@@ -39,8 +45,10 @@ class App extends React.Component {
       blogs: [],
       appointments: [],
       selectedCategoryDetail: null,
-      searchCategory: []
-
+      searchCategory: [],
+      ownedAppointments: [],
+      allAppointments: [],
+      allCategories: []
     };
   }
 
@@ -51,18 +59,24 @@ class App extends React.Component {
   //     loggedIn: true,
   //    })
   //  }
+
+  populateUser() {
+    api.auth.getCurrentUser().then(data => {
+      console.log("login data", data)
+      const updatedState = { ...this.state.auth, user: data.user };
+      console.log("updateState", updatedState)
+      this.setState({ auth: updatedState, categories: data.categories, blogs: data.blogs, appointments: data.appointments, searchCategory: data.categories })
+    })
+  }
+
   componentDidMount() {
-    
-    // this.fetchCategories()
+
     const token = localStorage.getItem("token");
-    if (token) (
+    if (token) {
       // make a request to the backend and find our user
-      api.auth.getCurrentUser().then(data => {
-        console.log("login data", data)
-        const updatedState = { ...this.state.auth, user: data.user };
-        this.setState({ auth: updatedState, categories: data.categories, blogs: data.blogs, appointments: data.appointments, searchCategory: data.categories })
-      })
-    )
+      this.populateUser();
+    }
+
   }
 
   // signup = user => 
@@ -71,17 +85,20 @@ class App extends React.Component {
   // componentDidUpdate() {
   //   console.log("STATE UPDATED, USER: ", this.state.auth.user)
   // }
-  
+
   login = data => {
-    
-    const updatedState = { ...this.state.auth, user: { id: data.id, username: data.username } };
+    const updatedState = { ...this.state.auth, user: data.user };
+    console.log("data", data)
     localStorage.setItem("token", data.jwt);
-    this.setState({ auth: updatedState });
+    this.populateUser();
   };
 
   logout = () => {
     localStorage.removeItem("token");
-    this.setState({ auth: { user: {} } });
+    this.setState({ auth: { user: {} },
+      blogs: [],
+      appointments: []
+    });
   };
 
   //Fetches: 
@@ -103,6 +120,12 @@ class App extends React.Component {
       .then(data => this.setState({ allCategories: data }))
   }
 
+  fetchAppointments = () => {
+    fetch("http://localhost:3000/appointments")
+      .then(res => res.json())
+      .then(data => this.setState({ allAppointments: data }))
+  }
+
   // this.setState({allCategories: data}
 
   onShowDetail = (data) => {
@@ -122,31 +145,62 @@ class App extends React.Component {
           appointment_id: selectedAppointment.id
         }
       })
+    }).then(res => res.json()).then(data => {
+      this.setState(prev => {
+        return {
+          appointments: [...prev.appointments, data]
+        }
+      },
+      () => this.populateUser())
     })
-    const newOwnedAppointments = this.state.appointments
-    if (this.state.appointments.includes(selectedAppointment)) {
-      let newer = newOwnedAppointments.filter(appointment => {
-        return appointment.id !== selectedAppointment.id
-      })
-      this.setState({
-        appointments: newer
-      })
-    } else {
-      newOwnedAppointments.push(selectedAppointment)
-      this.setState({
-        appointments: newOwnedAppointments
-      })
-    }
+
+    // const newOwnedAppointments = this.state.ownedAppointments
+    // if (this.state.ownedAppointments.includes(selectedAppointment)) {
+    //   let newer = newOwnedAppointments.filter(appointment => {
+    //     return appointment.id !== selectedAppointment.id
+    //   })
+    //   this.setState({
+    //     ownedAppointments: newer
+    //   })
+    // } else {
+    //   newOwnedAppointments.push(selectedAppointment)
+    //   this.setState({
+    //     ownedAppointments: newOwnedAppointments
+    //   })
+    // }
   }
 
   onclickDelete = (deletedAppointment) => {
+
     fetch(`http://localhost:3000/appointments/${deletedAppointment.id}`, {
       method: 'DELETE',
       headers: { "Content-Type": "application/json", "Accept": "application/json" }
     }).then(() => this.setState(preState => ({
       appointments: preState.appointments.filter(apt => apt !== deletedAppointment)
     })))
+  }
 
+  deleteUserAppointments = (appointment) => {
+    const appointmentsId = appointment.id;
+    // console.log("userId", userId, "appointmentsId", appointmentsId)
+    let id = null;
+    this.state.auth.user.user_appointments.forEach(join => {
+      console.log(join)
+      console.log(appointmentsId)
+      if (join.appointment_id === appointmentsId) {
+        id = join.id;
+      }
+    })
+    console.log(id)
+    fetch(`http://localhost:3000/user_appointments/${id}`, {
+      method: 'DELETE',
+      headers: { "Content-Type": "application/json", "Accept": "application/json" }
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+      this.populateUser()
+    })
   }
 
   deleteBlog = (deleteBlog) => {
@@ -154,9 +208,10 @@ class App extends React.Component {
       method: 'DELETE',
       headers: { "Content-Type": "application/json", "Accept": "application/json" }
     }).then(() => this.setState(preState => ({
-      blogs: preState.blogs.filter(blog => blog !== deleteBlog )
+      blogs: preState.blogs.filter(blog => blog !== deleteBlog)
     })))
   }
+
 
 
   handleChange = e => {
@@ -202,28 +257,80 @@ class App extends React.Component {
   }
 
   CreateBlog = (blogInfo, id) => {
-    fetch('http://localhost:3000/blogs',{
+    fetch('http://localhost:3000/blogs', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
       body: JSON.stringify({
-        blog:{
-        image: blogInfo.image,
-        title: blogInfo.title,
-        story: blogInfo.story,
-        user_id: id
-      }
-      }) 
+        blog: {
+          image: blogInfo.image,
+          title: blogInfo.title,
+          story: blogInfo.story,
+          user_id: id
+        }
+      })
     })
-    .then(res => res.json())
-    .then(data =>
-      this.setState(preState => ({
-        blogs: [...preState.blogs, data],
-      }))
+      .then(res => res.json())
+      .then(data =>
+        this.setState(preState => ({
+          blogs: [...preState.blogs, data],
+        }))
       )
   }
+
+  CreateAppointment =(appointmentInfo, id) => {
+    fetch('http://localhost:3000/appointments', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        appointments: {
+          name: appointmentInfo.name,
+          time: appointmentInfo.time,
+          duration: appointmentInfo.duration,
+          location: appointmentInfo.location,
+          instructor: appointmentInfo.instructor,
+          status: appointmentInfo.status,
+          category_id: id
+        }
+      })
+  })
+  .then(res => res.json())
+      .then(data =>
+        this.setState(preState => ({
+          appointments: [...preState.appointments, data],
+        }))
+      )
+    }
+
+    CreateCategory =(categoryInfo, id) => {
+      fetch('http://localhost:3000/categories', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          categories: {
+            image: categoryInfo.image,
+            name: categoryInfo.name,
+            description: categoryInfo.description,
+            
+          }
+        })
+    })
+    .then(res => res.json())
+        .then(data =>
+          this.setState(preState => ({
+            categories: [...preState.categories, data],
+          }))
+        )
+      }
+  
 
 
   render() {
@@ -234,7 +341,6 @@ class App extends React.Component {
             path='/'
             render={() =>
               <NavBar
-
                 title="ClassFinder"
                 description="our app"
                 icon="class finder"
@@ -243,8 +349,20 @@ class App extends React.Component {
                 search={this.state.search}
                 onSearch={this.handleChange}
               />
+
             }
           />
+
+          <Route
+            exact
+            path="/home"
+            render={props => <HomepageLayout {...props} />}
+          />
+
+
+
+
+
           <Route
             exact
             path="/login"
@@ -259,13 +377,17 @@ class App extends React.Component {
 
           <Route exact
             path="/categories"
-            render={props => <CategoriesCardContainer {...props} showCategories={this.state.searchCategory} />}
+            render={props => <CategoriesCardContainer {...props}
+              showCategories={this.state.searchCategory}
+              showCategoriesWithoutLogin={this.state.allCategories}
+            />}
           />
 
           <Route exact
             path="/category_details/:id"
             render={props => <CardInfoComponent {...props} selectedCategory={this.state.selectedCategoryDetail}
               onShowDetail={this.onShowDetail}
+              categories={this.state.categories}
               onAddAppointment={this.onAddAppointment} />}
           />
 
@@ -276,9 +398,9 @@ class App extends React.Component {
               userBlogs={this.state.blogs}
               userAppointments={this.state.appointments}
               userCategories={this.state.categories}
-              onclick={this.onclickDelete} 
+              onclick={this.deleteUserAppointments}
               deleteBlog={this.deleteBlog}
-              />}
+            />}
           />
 
           <Route
@@ -301,9 +423,55 @@ class App extends React.Component {
                 {...props}
                 userInfo={this.state.auth.user}
                 onCreateBlog={this.CreateBlog}
-      
+
               />
             )}
+          />
+
+        <Route
+            path="/create-appointment"
+            exact
+            render={props => (
+              <CreateAppointment
+                {...props}
+                userInfo={this.state.auth.user}
+                onCreateAppointment={this.CreateAppointment}
+                 
+              />
+            )}
+          />
+
+        <Route
+            path="/create-categories"
+            exact
+            render={props => (
+              <CreateCategory
+                {...props}
+                userInfo={this.state.auth.user}
+                onCreateCategory={this.CreateCategory}
+
+              />
+            )}
+          />
+
+          <Route
+            path='/About'
+            render={props =>(
+              <About
+                {...props}
+              />
+
+            )}
+          />
+
+          <Route
+            path='/'
+            render={() =>
+              <Footer
+                onLogout={this.logout}
+              />
+
+            }
           />
 
         </Router>
@@ -313,7 +481,7 @@ class App extends React.Component {
 
 
       </div>
-    );
+    )
   }
 
 }

@@ -11,14 +11,14 @@ const config = {
 }
 
 
-class CreateBlog extends Component {
+class CreateCategory extends Component {
 
     constructor(){
         super()
         this.state = {
-            title: "",
-            story: "",
             image: "",
+            name: "",
+            description: "",
         }
     }
    
@@ -41,10 +41,9 @@ class CreateBlog extends Component {
 
     handleSubmit = e => {
        
-        const id = this.props.match.params.id
+        
 
-        console.log("userId", id)
-        this.props.onCreateBlog(this.state, id)
+        this.props.onCreateCategory(this.state)
         this.props.history.push('/myProfile')
     }
 
@@ -61,12 +60,12 @@ render() {
         <Container style={{ margin: '12rem 0 0 12rem' }}>
     <Form onSubmit={e => this.handleSubmit(e) }>
                         <Form.Field>
-                        <label>title</label>
-                        <input placeholder='title' name="title" value={this.state.title} onChange={this.handleChange}/>
+                        <label>name</label>
+                        <input placeholder='name' name="name" value={this.state.name} onChange={this.handleChange}/>
                         </Form.Field>
                         <Form.Field>
-                        <label>story</label>
-                        <input placeholder='story' name="story" value={this.state.story} onChange={this.handleChange}/>
+                        <label>description</label>
+                        <input placeholder='description' name="description" value={this.state.description} onChange={this.handleChange}/>
                         </Form.Field>
                         <Form.Field>
                         <label>image</label>
@@ -85,4 +84,4 @@ render() {
 
 
 }
-export default CreateBlog;
+export default CreateCategory;

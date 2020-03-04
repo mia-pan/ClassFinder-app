@@ -39,7 +39,7 @@ class CategoriesCardContainer extends React.Component {
       return (
         
         <Grid.Column>
-          <CategoriesCard history={this.props.history} category={category} key={category.id} onShowDetails={this.props.onShowDetails} />
+          <CategoriesCard history={this.props.history} category={category} key={category.id} onShowDetails={this.props.onShowDetails} onShowDetailsWithoutLogin={this.props.showCategoriesWithoutLogin}/>
         </ Grid.Column>
 
       )
