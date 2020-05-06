@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Card, Image, Icon } from 'semantic-ui-react'
+import { Card, Image, Icon, Grid, Button} from 'semantic-ui-react'
 import { withRouter } from 'react-router-dom'
 import { api } from '../services/api'
 
@@ -38,11 +38,25 @@ handleClick = () => {
     </Card.Content>
     <Card.Content extra>
       <a>
-        <Icon name='star' />
+        <Icon name='star' />s
         4.8(500+)
       </a>
+
+      <br></br>
+      <br></br>
+      <Button color='red'>
+        <Icon name='heart' />
+        Like
+      </Button>
+      
+      <Button basic color='blue' onClick={() => this.props.onClick(this.props.category)}>
+        <Icon name='delete' />
+        Delete
+      </Button>
+
     </Card.Content>
   </Card>
+  
   <br></br>
 
       </div>

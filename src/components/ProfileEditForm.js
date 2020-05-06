@@ -32,11 +32,11 @@ render() {
     <Form onSubmit={e => this.handleSubmit(e) }>
                         <Form.Field>
                         <label>username</label>
-                        <input placeholder='username' name="username" value={this.state.username} onChange={this.handleChange}/>
+                        <input placeholder={this.props.profileInfo.user.username} name="username" value={this.state.username} onChange={this.handleChange} defaultValue={this.props.profileInfo.user.username}/>
                         </Form.Field>
                         <Form.Field>
                         <label>Email</label>
-                        <input placeholder='email' name="email" value={this.state.email} onChange={this.handleChange}/>
+                        <input placeholder={this.props.profileInfo.user.email} name="email" value={this.state.email} onChange={this.handleChange} defaultValue={this.props.profileInfo.user.email}/>
                         </Form.Field>
                         {/* <Form.Field>
                         <label>Password</label>

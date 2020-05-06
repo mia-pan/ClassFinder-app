@@ -1,14 +1,18 @@
-import React, { Component } from 'react'
-import { Image, Card, Icon, Label, Menu, Table, Item, Grid , Container, Button } from 'semantic-ui-react';
-import { api } from '../services/api'
-class ClassInfoComponent extends Component {
-
-   
+import React, { Component } from 'react';
+import { Image, Card, Icon, Label, Menu, Table, Item, Grid , Container, Button, Form } from 'semantic-ui-react';
+import { NavLink, withRouter } from 'react-router-dom'
+class ClassDetail extends Component {
     
-    render(){
-        return(
+   
+   
+   
+
+    
+
+    render() {
+        return (
             
-            <Card style={{margin: '2rem'}}>
+            <Card>
             <Card.Content>
             <Card.Header>Class Name: {this.props.appointment.name}</Card.Header>
             <Card.Meta>Class Time: {this.props.appointment.time} </Card.Meta>
@@ -26,19 +30,21 @@ class ClassInfoComponent extends Component {
             </Card.Description>
         </Card.Content>
         <Card.Content extra>
-        <div className='ui two buttons'>
-          <Button basic color='green'>
-            Update
-          </Button>
-          <Button basic color='red' onClick={() => this.props.onclick(this.props.appointment)}>
-            Delete
+        <div className='ui one buttons'>
+          
+          <Button basic color='green' as={NavLink} to="/myProfile" onClick={() => this.props.onAddAppointment(this.props.appointment)}>
+           Add to My Card
           </Button>
         </div>
       </Card.Content>
     </Card>
     
+    
+    
         )
     }
 
 }
-export default ClassInfoComponent;
+export default ClassDetail;
+
+// this.props.appointment.name

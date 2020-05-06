@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Image, Card, Icon, Label, Menu, Table, Item, Grid , Container, Button, Form } from 'semantic-ui-react';
+import { Image, Card, Icon, Label, Menu, Table, Grid , Container, Button, Form,  Divider} from 'semantic-ui-react';
+
+
 import { api } from '../services/api'
 import ClassInfoComponent from "../components/ClassInfoComponent";
 import BlogComponent from "../components/BlogComponent"
@@ -15,9 +17,8 @@ class ProfileContainer extends Component {
             return(
                 <div>
                   <ClassInfoComponent appointment={appointment} onclick={this.props.onclick}/>
-            </div>
+              </div>
             )
-    
         })
     }
     
@@ -29,9 +30,7 @@ class ProfileContainer extends Component {
                 </div>
             )
         }
-
         )
-
     }
 
     displayCreateNew = (props) => {
@@ -95,9 +94,9 @@ class ProfileContainer extends Component {
         return (
             <>
             
-
-                <Image style={{ margin: '12rem 0 0 12rem' }} src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" size='small' circular />
-
+                <div style={{margin: '5rem 0 0 0'}}>
+                <Image style={{ margin: 'auto' }} src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" size='small' circular />
+                </div>
                 <div style={{ margin: '0 0 0 2rem' }}>
                     <p>Username: {this.props.showUser.username}</p>
                     <p>Email: {this.props.showUser.email}</p>
@@ -135,31 +134,48 @@ class ProfileContainer extends Component {
                     </Button>
                     </Link>
 
+                    <div>
+                        
+                        <Button icon labelPosition='right'>
+                            Delete Categories
+                          <Icon name='right arrow' />
+                       </Button>
+                   </div>
+
                    {this.displayCreateNew()}
 
-                    {this.displayStudents()}
+                    
                     {this.displayCreateCategory()}
+
+                    {this.displayStudents()}
                 </div>
                 
                 <div>
-                   {this.displayBlog()}
+                
+                    <Card.Group centered style={{width: '50%', margin: 'auto', padding: '5rem 0 0 0'}} >
+                     {this.displayBlog()}
+                   </Card.Group>  
                 </div>
                    
               <div>
-                   <Item.Group>
-                        <Item style={{margin: '12rem 0 0 12rem'}}>
+              <Image.Group size='tiny' style={{ paddingTop:"60px"}}>
+                       
                              {this.props.userCategories.map(category => {
                                  return ( 
 
-                                   <Item.Image size='tiny' src={category.image}  />
+                                   <Image size='tiny' src={category.image}  />
                                  )
                              }
                              )}  
-                        </Item>
-                  </Item.Group>
-                
+                  
+                  </Image.Group >
                   <div>
+                  <Divider />
+                  </div>
+                  <div>
+                    <Card.Group centered style={{width: '50%', margin: 'auto', padding: '5rem 0 0 0'}} >
                      {this.displayClass()}
+                     </Card.Group>  
                  </div>
                  
                

@@ -17,6 +17,8 @@ import HomepageLayout from "./containers/HomepageLayout";
 import About  from "./containers/About"
 import CreateAppointment from './components/CreateAppointment'
 import CreateCategory from './components/CreateCategory'
+import Class from './containers/Class';
+
 
 
 
@@ -48,7 +50,9 @@ class App extends React.Component {
       searchCategory: [],
       ownedAppointments: [],
       allAppointments: [],
-      allCategories: []
+      allCategories: [],
+      login: false,
+      displayedStocks:''
     };
   }
 
@@ -65,7 +69,7 @@ class App extends React.Component {
       console.log("login data", data)
       const updatedState = { ...this.state.auth, user: data.user };
       console.log("updateState", updatedState)
-      this.setState({ auth: updatedState, categories: data.categories, blogs: data.blogs, appointments: data.appointments, searchCategory: data.categories })
+      this.setState({ auth: updatedState, categories: data.categories, blogs: data.blogs, appointments: data.appointments, searchCategory: data.categories, login:true })
     })
   }
 
@@ -75,6 +79,7 @@ class App extends React.Component {
     if (token) {
       // make a request to the backend and find our user
       this.populateUser();
+      
     }
 
   }
@@ -94,8 +99,10 @@ class App extends React.Component {
   };
 
   logout = () => {
+    
     localStorage.removeItem("token");
     this.setState({ auth: { user: {} },
+      login: false,
       blogs: [],
       appointments: []
     });
@@ -124,6 +131,7 @@ class App extends React.Component {
     fetch("http://localhost:3000/appointments")
       .then(res => res.json())
       .then(data => this.setState({ allAppointments: data }))
+      
   }
 
   // this.setState({allCategories: data}
@@ -288,14 +296,14 @@ class App extends React.Component {
         Accept: "application/json"
       },
       body: JSON.stringify({
-        appointments: {
+        appointment: {
           name: appointmentInfo.name,
           time: appointmentInfo.time,
           duration: appointmentInfo.duration,
           location: appointmentInfo.location,
           instructor: appointmentInfo.instructor,
           status: appointmentInfo.status,
-          category_id: id
+          category_id: appointmentInfo.category_id
         }
       })
   })
@@ -315,7 +323,7 @@ class App extends React.Component {
           Accept: "application/json"
         },
         body: JSON.stringify({
-          categories: {
+          category: {
             image: categoryInfo.image,
             name: categoryInfo.name,
             description: categoryInfo.description,
@@ -329,6 +337,39 @@ class App extends React.Component {
             categories: [...preState.categories, data],
           }))
         )
+      }
+
+      deleteCategory = (deletedCategory) => {
+        fetch('http://localhost:3000/categories', {
+          method: 'DELETE',
+          headers:{"Content-Type": "application/json", "Accept": "application/json" }
+        }).then(() => this.setSate(preState => ({
+          categories: preState.categories.filter(category => category !== deletedCategory)
+        })))
+      }
+
+
+      handleFilter= value => {
+            let filtered = this.state.appointments.filter(appointments => appointments.name === value)
+        this.setState({
+          displayedStocks: filtered
+        })
+      }
+
+     
+      onSortByStatus = appointments => {
+        let sorted = appointments.sort((a,b) => a.price > b.price ? 1 : -1)
+        this.setState({
+          displayedStocks: sorted
+        })
+       
+      }
+
+      onSortByName = appointments => {
+        let sorted = appointments.sort((a, b) => a.name.localeCompare(b.name))
+        this.setState({
+          displayedStocks: sorted
+        })
       }
   
 
@@ -348,6 +389,7 @@ class App extends React.Component {
                 handleLogout={this.logout}
                 search={this.state.search}
                 onSearch={this.handleChange}
+                login={this.state.login}
               />
 
             }
@@ -380,6 +422,7 @@ class App extends React.Component {
             render={props => <CategoriesCardContainer {...props}
               showCategories={this.state.searchCategory}
               showCategoriesWithoutLogin={this.state.allCategories}
+              onClick={this.deleteCategory}
             />}
           />
 
@@ -409,6 +452,7 @@ class App extends React.Component {
             render={props => (
               <ProfileEditForm
                 {...props}
+                
                 profileInfo={this.state.auth}
                 onEditProfile={this.editProfile}
               />
@@ -436,7 +480,8 @@ class App extends React.Component {
                 {...props}
                 userInfo={this.state.auth.user}
                 onCreateAppointment={this.CreateAppointment}
-                 
+                categoriesInfo={this.state.categories}
+                onAddAppointment={this.onAddAppointment}
               />
             )}
           />
@@ -464,6 +509,23 @@ class App extends React.Component {
             )}
           />
 
+            <Route
+            path='/classes'
+            render={(props) =>
+              <Class
+              {...props}
+              onAddAppointment={this.onAddAppointment}
+              fetchAppointments={this.fetchAppointments}
+              appointments={this.state.allAppointments}
+              onSortByName={this.onSortByName}
+              onSortByStatus={this.onSortByStatus}
+              handleFilter={this.handleFilter}
+
+              />
+
+            }
+          />
+
           <Route
             path='/'
             render={() =>
@@ -473,12 +535,7 @@ class App extends React.Component {
 
             }
           />
-
         </Router>
-
-
-
-
 
       </div>
     )

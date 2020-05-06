@@ -1,7 +1,7 @@
 import React from "react";
 import { api } from "../services/api";
 import { Route, Switch } from "react-router-dom";
-import { Card, Icon, Image, Grid } from 'semantic-ui-react'
+import { Card, Icon, Image, Grid, Container } from 'semantic-ui-react'
 import CategoriesCard from "../components/CategoriesCard";
 
 class CategoriesCardContainer extends React.Component {
@@ -37,10 +37,11 @@ class CategoriesCardContainer extends React.Component {
       // console.log(category)
 
       return (
-        
+       
         <Grid.Column>
-          <CategoriesCard history={this.props.history} category={category} key={category.id} onShowDetails={this.props.onShowDetails} onShowDetailsWithoutLogin={this.props.showCategoriesWithoutLogin}/>
-        </ Grid.Column>
+          <CategoriesCard history={this.props.history} category={category} onClick={this.props.onClick} key={category.id} onShowDetails={this.props.onShowDetails} onShowDetailsWithoutLogin={this.props.showCategoriesWithoutLogin}/>
+        </Grid.Column>
+        
 
       )
     })
@@ -48,15 +49,17 @@ class CategoriesCardContainer extends React.Component {
 
   render() {
     return (
-      <div >
+      <div className='categoryDiv'  style={{ margin: '70rem, 70, 50, 90rem', paddingTop:"100px" }}>
         {/* {console.log(this.props)} */}
-        <Grid >
-          <Grid.Row columns={2} >
+        <Container style={{ margin: '70rem, 70, 50, 90rem' }}>
+        <Grid  centered>
+        <Grid.Row columns={4} >
 
             {this.renderCards()}
 
-          </Grid.Row>
+         </Grid.Row>
         </Grid>
+        </Container>
       </div>
     )
 

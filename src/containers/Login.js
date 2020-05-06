@@ -37,7 +37,7 @@ class Login extends React.Component {
         // localStorage.setItem("token", res.jwt)
         // console.log('updateState', updateState)
         this.props.onLogin(res);
-        this.props.history.push('/');
+        this.props.history.push('/home');
       } else {
         // this.setState({ auth: updateState });
         alert("error")

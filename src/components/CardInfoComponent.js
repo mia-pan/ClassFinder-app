@@ -32,88 +32,91 @@ class CardInfoComponent extends React.Component {
         return (
             <>
             {this.props.selectedCategory!==null?<>
-            <br/>
-            <Card style={{margin: '12rem 0 0 12rem'}}>
-                <Image src={this.props.selectedCategory.image} wrapped ui={false} />
-                <Card.Content>
-                    <Card.Header>{this.props.selectedCategory.name}</Card.Header>
-                    <Card.Meta>
-                        <span className='date'>Description</span>
-                    </Card.Meta>
-                    <Card.Description>
-                        {this.props.selectedCategory.description}
-                    </Card.Description>
-                </Card.Content>
-                
-            </Card>
-            <div className="App">
-               <Map categories={this.props.categories}
-               googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyDkhgpXKUb91RTLLIu5YkRy5_DVVA5x7ng&v=3.exp&libraries=geometry,drawing,places`}
-               loadingElement={<div style={{ height: `100%` }} />}
-               containerElement={<div style={{ height: `600px`, width: `600px` }} />}
-               mapElement={<div style={{ height: `100%` }} />}
-               />
-            </div>
-
-            {/* <Map
-                google={this.props.google}
-                zoom={8}
-                style={mapStyles}
-                initialCenter={{ lat: 47.6062, lng: 122.3321}}
-            /> */}
-
-            <Table celled>
-            <Table.Header>
-            <Table.Row>
-                <Table.HeaderCell>Class Name</Table.HeaderCell>
-                <Table.HeaderCell>Time</Table.HeaderCell>
-                <Table.HeaderCell>Class Duration</Table.HeaderCell>
-                <Table.HeaderCell>Location</Table.HeaderCell>
-                <Table.HeaderCell>Instructor</Table.HeaderCell>
-                <Table.HeaderCell>Status</Table.HeaderCell>
-                <Table.HeaderCell>Add to my Card</Table.HeaderCell>
-            </Table.Row>
-            </Table.Header>
-            <Table.Body style={{}}>
             
-          
-            {this.props.selectedCategory.appointments.map(appointment =>{
-               return (
-                <Table.Row>
-                <Table.Cell>{appointment.name}</Table.Cell>
-                <Table.Cell>{appointment.time}</Table.Cell>
-                <Table.Cell>{appointment.duration}</Table.Cell>
-                <Table.Cell>{appointment.location}</Table.Cell>
-                <Table.Cell>{appointment.instructor}</Table.Cell>
-                <Table.Cell>{appointment.status}</Table.Cell>
-                <Table.Cell><button onClick={(e) => this.handleClick(e, appointment)} >Add to Card</button></Table.Cell>
-                </Table.Row>
-               )
-            })
-            }
             
-            </Table.Body>
-              <Table.Footer>
-            <Table.Row>
-                <Table.HeaderCell colSpan='9'>
-                <Menu floated='right' pagination>
-                    <Menu.Item as='a' icon>
-                    <Icon name='chevron left' />
-                    </Menu.Item>
-                    <Menu.Item as='a'>1</Menu.Item>
-                    <Menu.Item as='a'>2</Menu.Item>
-                    <Menu.Item as='a'>3</Menu.Item>
-                    <Menu.Item as='a'>4</Menu.Item>
-                    <Menu.Item as='a' icon>
-                    <Icon name='chevron right' />
-                    </Menu.Item>
-                </Menu>
-                </Table.HeaderCell>
-                </Table.Row>
-                </Table.Footer>
-                </Table>
+                    <div style={{margin: '10rem 0 0 0'}}>
+                    <div style={{width: '50%', float: 'left'}}>
+                    <Card style={{margin: '0rem 0 0 12rem'}}>
+                        <Image src={this.props.selectedCategory.image} wrapped ui={false} />
+                        <Card.Content>
+                            <Card.Header>{this.props.selectedCategory.name}</Card.Header>
+                            <Card.Meta>
+                                <span className='date'>Description</span>
+                            </Card.Meta>
+                            <Card.Description>
+                                {this.props.selectedCategory.description}
+                            </Card.Description>
+                        </Card.Content>
+                        
+                    </Card>
+                    </div>
+
+                    <div className="App" style={{width: '50%', float: 'right', margin: '0 0 8rem 0'}}>
+                    <Map categories={this.props.categories}
+                    googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyDkhgpXKUb91RTLLIu5YkRy5_DVVA5x7ng&v=3.exp&libraries=geometry,drawing,places`}
+                    loadingElement={<div style={{ height: `100%` }} />}
+                    containerElement={<div style={{ height: `600px`, width: `600px` }} />}
+                    mapElement={<div style={{ height: `100%` }} />}
+                    />
+                    </div>
+                    </div>
+
+            
+                    <div>
+                            <Table celled style={{width: '80%', margin: 'auto'}}>
+                            <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>Class Name</Table.HeaderCell>
+                                <Table.HeaderCell>Time</Table.HeaderCell>
+                                <Table.HeaderCell>Class Duration</Table.HeaderCell>
+                                <Table.HeaderCell>Location</Table.HeaderCell>
+                                <Table.HeaderCell>Instructor</Table.HeaderCell>
+                                <Table.HeaderCell>Status</Table.HeaderCell>
+                                <Table.HeaderCell>Add to my Card</Table.HeaderCell>
+                            </Table.Row>
+                            </Table.Header>
+                            <Table.Body style={{}}>
+                            
+                        
+                            {this.props.selectedCategory.appointments.map(appointment =>{
+                            return (
+                                <Table.Row>
+                                <Table.Cell>{appointment.name}</Table.Cell>
+                                <Table.Cell>{appointment.time}</Table.Cell>
+                                <Table.Cell>{appointment.duration}</Table.Cell>
+                                <Table.Cell>{appointment.location}</Table.Cell>
+                                <Table.Cell>{appointment.instructor}</Table.Cell>
+                                <Table.Cell>{appointment.status}</Table.Cell>
+                                <Table.Cell><button onClick={(e) => this.handleClick(e, appointment)} >Add to Card</button></Table.Cell>
+                                </Table.Row>
+                            )
+                            })
+                            }
+                            
+                            </Table.Body>
+                            <Table.Footer>
+                            <Table.Row>
+                                <Table.HeaderCell colSpan='9'>
+                                <Menu floated='right' pagination>
+                                    <Menu.Item as='a' icon>
+                                    <Icon name='chevron left' />
+                                    </Menu.Item>
+                                    <Menu.Item as='a'>1</Menu.Item>
+                                    <Menu.Item as='a'>2</Menu.Item>
+                                    <Menu.Item as='a'>3</Menu.Item>
+                                    <Menu.Item as='a'>4</Menu.Item>
+                                    <Menu.Item as='a' icon>
+                                    <Icon name='chevron right' />
+                                    </Menu.Item>
+                                </Menu>
+                                </Table.HeaderCell>
+                                </Table.Row>
+                                </Table.Footer>
+                                </Table>
+                    </div>
+            
             </>:null}
-
+            
             </>
         )
     }

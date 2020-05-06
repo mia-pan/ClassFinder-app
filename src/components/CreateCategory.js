@@ -1,13 +1,13 @@
 import { api } from '../services/api'
 import React, { Component } from 'react'
-import { Image, Card, Icon, Label, Menu, Table, Item, Grid , Container, Button, Form } from 'semantic-ui-react'
+import { Image, Card, Icon, Label, Menu, Table, Item, Grid , Container, Button, Form,  Dropdown } from 'semantic-ui-react'
 import S3FileUpload from 'react-s3'
 
 const config = {
     bucketName: 'class-finder-project',
     region: 'us-west-2',
-    accessKeyId: 'AKIAJ3SMCFMF2PW37WWQ',
-    secretAccessKey: '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'
+    accessKeyId: 'AKIAJS4DM2CHMQC4EYDQ',
+    secretAccessKey: '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'
 }
 
 

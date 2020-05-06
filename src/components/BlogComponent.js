@@ -5,7 +5,7 @@ class BlogComponent extends Component {
 
     render(){
         return(
-            <Card style={{margin: '12rem 0 0 12rem'}}>
+            <Card style={{margin: '2rem'}}>
                             <Image src={this.props.blog.image} wrapped ui={false} />
                             <Card.Content>
                                 <Card.Header>{this.props.blog.title}</Card.Header>

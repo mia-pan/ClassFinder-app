@@ -2,6 +2,9 @@ import { api } from '../services/api'
 import React, { Component } from 'react'
 import { Image, Card, Icon, Label, Menu, Table, Item, Grid , Container, Button, Form, Dropdown } from 'semantic-ui-react'
 import S3FileUpload from 'react-s3'
+import DatePicker from "react-datepicker";
+ 
+import "react-datepicker/dist/react-datepicker.css";
 
 // const config = {
 //     bucketName: 'class-finder-project',
@@ -17,14 +20,17 @@ class CreateAppointment extends Component {
         super()
         this.state = {
             name: "",
-            time: "",
+            
             duration: "",
             location: "",
             instructor: "",
             status: "",
             category_id: "",
+           time: new Date()
         }
+
     }
+
    
 
    
@@ -40,35 +46,50 @@ class CreateAppointment extends Component {
     //          alert(err)
     //      })
     // }
-    
+    handleClick = (e, appointment) => {
+        this.props.onAddAppointment(appointment)
+    }
  
 
     handleSubmit = e => {
        
-        const id = this.props.match.params.id
+        
 
-        console.log("userId", id)
-        this.props.onCreateBlog(this.state, id)
+        console.log("userId")
+        this.props.onCreateAppointment(this.state)
         this.props.history.push('/myProfile')
     }
 
     handleChange = e => {
         this.setState({[e.target.name]: e.target.value})
     }
+
+    handleDateChange = date => {
+        this.setState({
+            time: date
+        })
+    }
    
-    options = (props) => {
+    handleCategoryChange = (e, value) => {
+        console.log("value", value)
+        this.setState({
+            category_id: value.value
+        })
+    }
+    options = () => {
 
         // { key: 1, text: {this.props.categoriesInfo}, value: 1 },
         // { key: 2, text: 'Choice 2', value: 2 },
         // { key: 3, text: 'Choice 3', value: 3 },
-        const categoriesInfo = this.props.categoriesInfo
+        console.log(this.props)
+        const {categoriesInfo} = this.props
+        console.log(categoriesInfo)
         const length = categoriesInfo.length
         console.log("length", length, "categoriesInfo", categoriesInfo)
         const output = []
-        let key=0
-        while(key < length) {
-            output[key] = {text:this.props.categoriesInfo[key].name, value:key+1};
-            key++
+       for(let key = 0; key < length; key++) {
+            output.push({key: key, text: this.props.categoriesInfo[key].name, value:this.props.categoriesInfo[key].id});
+         
         }
 
         return output;
@@ -84,10 +105,17 @@ render() {
                         <label>name</label>
                         <input placeholder='name' name="name" value={this.state.name} onChange={this.handleChange}/>
                         </Form.Field>
-                        <Form.Field>
+
+                        <DatePicker
+                            selected={this.state.time}
+                            onChange={this.handleDateChange}
+                            showTimeSelect
+                            dateFormat="Pp"
+                        />
+                        {/* <Form.Field>
                         <label>time</label>
                         <input placeholder='time' name="time" value={this.state.time} onChange={this.handleChange}/>
-                        </Form.Field>
+                        </Form.Field> */}
                         <Form.Field>
                         <label>duration</label>
                         <input placeholder='duration' name="duration" value={this.state.duration} onChange={this.handleChange}/>
@@ -102,15 +130,15 @@ render() {
                         </Form.Field>
                         <Form.Field>
                         <label>status</label>
-                        <input placeholder='status' name="status" value={this.state.duration} onChange={this.handleChange}/>
+                        <input placeholder='status' name="status" value={this.state.status} onChange={this.handleChange}/>
                         </Form.Field>
                         <Form.Field>
-                        <Dropdown clearable options={this.options()} selection />
+                        <Dropdown clearable options={this.options()} selection onChange={this.handleCategoryChange}  />
                         </Form.Field>
 
                     
                         
-                        <Button type='submit'>Create</Button>
+                        <Button type='submit' onClick={(e) => this.handleClick(e, this.state)}>Create</Button>
                     </Form>
                     </Container>
                     </div>

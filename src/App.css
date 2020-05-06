@@ -60,3 +60,20 @@
 .ui.huge.primary.button {
   background-color: orange;
 }
+
+
+
+.categoryDiv {
+  margin: 70rem, 70, 50, 90rem
+   
+}
+
+#profile-image{
+  border-radius: 50%;
+  float: left;
+}
+
+#job-header img {
+  height: 3rem;
+  width: auto;
+}
